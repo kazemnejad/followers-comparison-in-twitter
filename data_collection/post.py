@@ -2,6 +2,7 @@ import json
 from json import JSONEncoder
 
 import tweepy
+import os
 
 
 class PostEncoder(JSONEncoder):
@@ -31,7 +32,7 @@ def save_all_tweets(api_key, user_id, output_filename):
     # authorize twitter, initialize tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
-    api = tweepy.API(auth)
+    api = tweepy.API(auth, wait_on_rate_limit=True)
 
     # initialize a list to hold all the tweepy Tweets
     alltweets = []
@@ -100,9 +101,14 @@ def mine_followers_post(api_key, username, i=0, div=1):
     with open("%s_final.json" % username) as f:
         user_ids = json.load(f)
 
+    finished_jobs = set(os.listdir("data_%s/" % username))
     step = len(user_ids) // div
     target_user_ids = user_ids[step * i: step * (i + 1)]
 
     for id in target_user_ids:
+        if str(id) in finished_jobs:
+            print("skipping %s" % id)
+            continue
+
         save_all_tweets(api_key, id, "data_%s/%s" % (username, id))
         print("done!!! %s" % id, flush=True)
