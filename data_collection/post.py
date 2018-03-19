@@ -1,6 +1,8 @@
 import json
 from json import JSONEncoder
 
+import tweepy
+
 
 class PostEncoder(JSONEncoder):
     def default(self, o):
@@ -12,6 +14,54 @@ class PostEncoder(JSONEncoder):
             del dict["_json"]
 
         return dict
+
+
+class PostEncoderRaw(JSONEncoder):
+    def default(self, o):
+        return o._json
+
+
+def save_all_tweets(api_key, user_id, output_filename):
+    # Twitter API credentials
+    consumer_key = api_key["consumer_key"]
+    consumer_secret = api_key["consumer_secret"]
+    access_key = api_key["access_key"]
+    access_secret = api_key["access_secret"]
+
+    # authorize twitter, initialize tweepy
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_key, access_secret)
+    api = tweepy.API(auth)
+
+    # initialize a list to hold all the tweepy Tweets
+    alltweets = []
+
+    # make initial request for most recent tweets (200 is the maximum allowed count)
+    new_tweets = api.user_timeline(user_id=user_id, count=200)
+
+    # save most recent tweets
+    alltweets.extend(new_tweets)
+
+    # save the id of the oldest tweet less one
+    oldest = alltweets[-1].id - 1
+
+    # keep grabbing tweets until there are no tweets left to grab
+    while len(new_tweets) > 0:
+        print("getting tweets before %s" % (oldest))
+
+        # all subsiquent requests use the max_id param to prevent duplicates
+        new_tweets = api.user_timeline(user_id=user_id, count=200, max_id=oldest)
+
+        # save most recent tweets
+        alltweets.extend(new_tweets)
+
+        # update the id of the oldest tweet less one
+        oldest = alltweets[-1].id - 1
+
+        print("...%s tweets downloaded so far" % (len(alltweets)))
+
+    with open(output_filename, 'w', encoding="utf8") as f:
+        json.dump(alltweets, f, cls=PostEncoderRaw, ensure_ascii=False)
 
 
 def get_native_posts(api, username):
@@ -44,3 +94,15 @@ def extract_user_native_posts(api, username, just_id=False):
     save_posts(posts, filename % username)
     print("done!!!!!!!!")
     print(len(posts))
+
+
+def mine_followers_post(api_key, username, i=0, div=1):
+    with open("%s_final.json" % username) as f:
+        user_ids = json.load(f)
+
+    step = len(user_ids) // div
+    target_user_ids = user_ids[step * i: step * (i + 1)]
+
+    for id in target_user_ids:
+        save_all_tweets(api_key, id, "data_%s/%s" % (username, id))
+        print("done!!! %s" % id, flush=True)
