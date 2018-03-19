@@ -25,8 +25,8 @@ def save_all_tweets(api_key, user_id, output_filename):
     # Twitter API credentials
     consumer_key = api_key["consumer_key"]
     consumer_secret = api_key["consumer_secret"]
-    access_key = api_key["access_key"]
-    access_secret = api_key["access_secret"]
+    access_key = api_key["access_token_key"]
+    access_secret = api_key["access_token_secret"]
 
     # authorize twitter, initialize tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
