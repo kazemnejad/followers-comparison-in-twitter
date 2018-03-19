@@ -21,18 +21,29 @@ keys = [
                     consumer_secret="xOqw2NMy3d4JCNkxSjMhoLyjCCyGIlcC4f236XQyZlKmoWoydq",
                     access_token_key="2241200860-Phh04eiBA1CnXGZhAV31fM3lvAYltiQac2TmsyM",
                     access_token_secret="IjfyOKXSjSHmvNKt70I0h1sTHRbMs074lXCykCmRJ7AQj",
+                    sleep_on_rate_limit=True),
+    create_key_data(consumer_key="7lNR91mKJuHaXBKtM5TbZf2Mx",
+                    consumer_secret="DWRzgqyX6gaHvvvMbyvzZGCZzATR58ZLbw53BWsiuZWW5zXPhU",
+                    access_token_key="1929901087-eN7OKtvwdPokPVhuX7kr0UgFJ0wfSeFf",
+                    access_token_secret="7L5zZDDVvDPaU2WYsLNzJ8YXQ2CZPNbdC2hgF3sUxTiWh",
                     sleep_on_rate_limit=True)
 ]
 
-api = twitter.Api(**keys[0])
-api.InitializeRateLimit()
+# api = twitter.Api(**keys[0])
+# api.InitializeRateLimit()
 
 # print(api.UsersLookup(user_id=[4255875020], return_json=True))
 # retweeter.extract_user_all_post_retweeters(api, "MJ_Akbarin")
 # follower.extract_followers(api, "yaminpour", just_id=True)
 # post.extract_user_native_posts(api, username="MJ_Akbarin", just_id=True)
 # retweeter.save_unique_retweeters("MJ_Akbarin")
+#
+# user.extract_all_user_info(api, "hamidrasaee")
+# user.extract_all_user_info(api, "MJ_Akbarin_1")
+# user.extract_all_user_info(api, "MJ_Akbarin_2")
 
-user.extract_all_user_info(api, "hamidrasaee")
-user.extract_all_user_info(api, "MJ_Akbarin_1")
-user.extract_all_user_info(api, "MJ_Akbarin_2")
+user.clean_retweeters_info("hamidrasaee")
+user.clean_retweeters_info("MJ_Akbarin")
+post.mine_followers_post(keys[1], "MJ_Akbarin", i=0, div=3)
+post.mine_followers_post(keys[2], "MJ_Akbarin", i=1, div=3)
+post.mine_followers_post(keys[2], "MJ_Akbarin", i=2, div=3)

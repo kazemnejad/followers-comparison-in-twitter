@@ -22,6 +22,26 @@ class PostEncoderRaw(JSONEncoder):
         return o._json
 
 
+class PostEncoderTiny(JSONEncoder):
+    def default(self, o):
+        return {
+            "id": o.id,
+            "created_at": str(o.created_at),
+            "favorite_count": o.favorite_count,
+            "text": o.text,
+            "retweet_count": o.retweet_count,
+            "in_reply_to_user_id": o.in_reply_to_user_id,
+            "in_reply_to_status_id": o.in_reply_to_status_id,
+            "in_reply_to_screen_name": o.in_reply_to_screen_name,
+            "is_quote_status": o.is_quote_status,
+            "retweeted": o.retweeted,
+            "retweeted_status": {
+                "user_id": o._json["retweeted_status"]["user"]["id"] if "user" in o._json["retweeted_status"] else ""
+            } if "retweeted_status" in o._json else None,
+            "lang": o.lang,
+        }
+
+
 def save_all_tweets(api_key, user_id, output_filename):
     # Twitter API credentials
     consumer_key = api_key["consumer_key"]
@@ -62,7 +82,7 @@ def save_all_tweets(api_key, user_id, output_filename):
         print("...%s tweets downloaded so far" % (len(alltweets)))
 
     with open(output_filename, 'w', encoding="utf8") as f:
-        json.dump(alltweets, f, cls=PostEncoderRaw, ensure_ascii=False)
+        json.dump(alltweets, f, cls=PostEncoderTiny, ensure_ascii=False)
 
 
 def get_native_posts(api, username):
