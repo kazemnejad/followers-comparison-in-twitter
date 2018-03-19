@@ -1,5 +1,5 @@
 import twitter
-from data_collection import follower, post, retweeter
+from data_collection import follower, post, retweeter, user
 
 
 def create_key_data(**kwargs):
@@ -25,10 +25,14 @@ keys = [
 ]
 
 api = twitter.Api(**keys[0])
-
 api.InitializeRateLimit()
-print(api.UsersLookup(user_id=[4255875020], return_json=True))
+
+# print(api.UsersLookup(user_id=[4255875020], return_json=True))
 # retweeter.extract_user_all_post_retweeters(api, "MJ_Akbarin")
 # follower.extract_followers(api, "yaminpour", just_id=True)
 # post.extract_user_native_posts(api, username="MJ_Akbarin", just_id=True)
 # retweeter.save_unique_retweeters("MJ_Akbarin")
+
+user.extract_all_user_info(api, "hamidrasaee")
+user.extract_all_user_info(api, "MJ_Akbarin_1")
+user.extract_all_user_info(api, "MJ_Akbarin_2")
