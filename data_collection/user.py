@@ -7,7 +7,7 @@ def get_all_users_info(api, user_ids):
     users_info = []
     i = 0
     while True:
-        slided_user_ids = user_ids[i * 100, (i + 1) * 100]
+        slided_user_ids = user_ids[i * 100: (i + 1) * 100]
         if len(slided_user_ids) == 0:
             break
 
