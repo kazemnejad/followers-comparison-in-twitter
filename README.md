@@ -1,1 +1,1 @@
-# followers-comparision-in-twitter
+# followers-comparison-in-twitter
