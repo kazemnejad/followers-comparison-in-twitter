@@ -11,7 +11,6 @@ Single layer Convolution Neural network text classifier implementation in Tensor
 - Number filters: 32
 - Word embedding size: 200
 - Maximum document length: 40
-- SoftMax as output layer & ReLU as activation function
 - Static & dynamic word embedding is used
 - Static word vectors is trained using GloVe model on "52M+ token" corpus, [check out results](https://raw.githubusercontent.com/kazemnejad/followers-comparison-in-twitter/cnn/outputs/pic.png)
 
