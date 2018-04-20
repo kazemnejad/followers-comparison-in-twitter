@@ -14,12 +14,12 @@ def strip_links(text):
     link_regex = re.compile('((https?):((//)|(\\\\))+([\w\d:#@%/;$()~_?\+-=\\\.&](#!)?)*)', re.DOTALL)
     links = re.findall(link_regex, text)
     for link in links:
-        text = text.replace(link[0], ', ')
+        text = text.replace(link[0], '<link>')
     return text
 
 
 def strip_any_english_char(text):
-    return re.sub('[a-zA-z]', '', text)
+    return re.sub(r'[a-zA-z]', '', text)
 
 
 def fix_numbers(text):
@@ -172,7 +172,7 @@ def clean_user_data(username):
 
 def clean_text(text):
     text = strip_links(text)
-    text = strip_any_english_char(text)
+    # text = strip_any_english_char(text)
     text = persian.convert_ar_characters(text)
     text = persian.convert_ar_numbers(text)
     text = fix_numbers(text)
