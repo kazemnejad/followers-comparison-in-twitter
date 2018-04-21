@@ -103,28 +103,6 @@ class SingleCNNText:
 
         return convs
 
-    # def add_convolutions(self):
-    #     x = self.add_embeddings()
-    #
-    #     convs = []
-    #     for filter_size in self.config.filter_sizes:
-    #         filter_shape = (filter_size, self.config.embedding_size, 1, self.config.num_filters)
-    #
-    #         W = tf.Variable(tf.truncated_normal(filter_shape, stddev=0.1))
-    #         b = tf.Variable(tf.constant(0.1, shape=[self.config.num_filters]))
-    #         conv = tf.nn.conv2d(
-    #             x,
-    #             W,
-    #             strides=[1, 1, 1, 1],
-    #             padding='VALID',
-    #             name='conv-%d' % filter_size)
-    #
-    #         h = tf.nn.relu(tf.nn.bias_add(conv, b))
-    #
-    #         convs.append(h)
-    #
-    #     return convs
-
     def add_pooling(self):
         convs = self.add_convolutions()
 
@@ -141,22 +119,6 @@ class SingleCNNText:
             max_pools.append(mp)
 
         return max_pools
-
-    # def add_pooling(self):
-    #     convs = self.add_convolutions()
-    #
-    #     max_pools = []
-    #     for conv in convs:
-    #         mp = tf.nn.max_pool(
-    #             conv,
-    #             ksize=[1, conv.shape[1], 1, 1],
-    #             strides=[1, 1, 1, 1],
-    #             padding='VALID',
-    #             name='pool')
-    #
-    #         max_pools.append(mp)
-    #
-    #     return max_pools
 
     def add_pooling_flatten(self):
         pools = self.add_pooling()
