@@ -131,5 +131,29 @@ class NaiveBayesModel:
 
         return final_result
 
+    def find_must_effecting_words(self, label, k):
+        probs = []
+        for w in self.vocabulary:
+            diffs = []
+            for other_label in self.labels:
+                if other_label == label:
+                    continue
+
+                diffs.append(self._calculate_prob(label, w) - self._calculate_prob(other_label, w))
+
+            probs.append((w, sum(diffs)))
+
+        probs.sort(key=lambda x: x[1], reverse=True)
+        return probs[:k]
+
+    def _calculate_prob(self, label, word):
+        words_count = self.words_count[label]
+        numerator, denominator = self._add_1_smoothing(
+            words_count.get(word, 0),
+            self.total_word_counts_cache[label]
+        )
+
+        return math.log(numerator * 1.0 / denominator)
+
     def _add_1_smoothing(self, w_c, total):
         return (w_c + 1), (total + len(self.vocabulary) + 1)
