@@ -120,21 +120,4 @@ def evaluate():
 
 
 if __name__ == '__main__':
-    # evaluate()
-    # vocab = create_vocabulary('data/data_set.txt')
-    # print(len(vocab)
     train()
-    # inputs = [
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    #     (np.arange(10), one_hot(2, 1)),
-    # ]
-    #
-    # for i, (input_batch, label_batch) in enumerate(minibatches(inputs, 3, shuffle=False)):
-    #     print(i, input_batch, label_batch)
-    #     print("####")
