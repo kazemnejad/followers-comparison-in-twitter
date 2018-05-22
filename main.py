@@ -2,6 +2,7 @@ import twitter
 
 import data_cleaning
 import data_tokenization
+import classification_utils
 import wordmap
 from data_collection import follower, post, retweeter, user
 
@@ -47,6 +48,10 @@ keys = [
 # data_cleaning.convert_user_data_to_csv("MJ_Akbarin")
 # data_tokenization.extract_word("MJ_Akbarin")
 # wordmap.create_freq_file("MJ_Akbarin")
-wordmap.create_dif_common_freq_file("hamidrasaee", "MJ_Akbarin")
+# wordmap.create_dif_common_freq_file("hamidrasaee", "MJ_Akbarin")
 # wordmap.create_dif_freq_file_single("hamidrasaee", "MJ_Akbarin")
 # wordmap.create_dif_freq_file_single("MJ_Akbarin", "hamidrasaee")
+# classification_utils.create_simple_mallet_file()
+# classification_utils.extract_hashtag('MJ_Akbarin')
+# classification_utils.extract_hashtags(['hamidrasaee', 'MJ_Akbarin'])
+# classification_utils.create_data_set('hamidrasaee', 'MJ_Akbarin')

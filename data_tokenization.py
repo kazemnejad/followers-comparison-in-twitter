@@ -4,6 +4,7 @@ import re
 import os
 from random import shuffle
 
+import emoji
 from hazm import word_tokenize
 
 
@@ -84,6 +85,20 @@ def merge_nmi(word_lst):
     return result
 
 
+def separate_emoji(word_lst):
+    p = emoji.get_emoji_regexp()
+
+    result = []
+    for w in word_lst:
+        matches = re.findall(p, w)
+        if len(matches) > 0:
+            result += [emoji.demojize(m) for m in matches]
+        else:
+            result.append(w)
+
+    return result
+
+
 def is_just_persian(w):
     ptr = re.compile(
         "^(([۰-۹0-9])|([\s,کگۀی،,تثجحخد,غيًٌٍَ,ُپٰچژ,ء-ةذ-عف-ٔ])|((،|؟|«|»|؛|٬))|((\.|:|\!|\-|\[|\]|\(|\)|\/)))+$")
@@ -100,6 +115,7 @@ def tokenize(text, stopwords):
     word_candidates = merge_plural(word_candidates)
     word_candidates = merge_mi(word_candidates)
     word_candidates = merge_nmi(word_candidates)
+    word_candidates = separate_emoji(word_candidates)
     word_candidates = [w for w in word_candidates if len(w) > 0]
     return word_candidates
 

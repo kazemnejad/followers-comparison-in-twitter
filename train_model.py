@@ -35,15 +35,30 @@ def find_most_effective():
     model.load('model_1523953281')
 
     import json
-    print(json.dumps(model.find_must_effecting_words('MJ_Akbarin', 10), indent=4, ensure_ascii=False))
+    print(json.dumps(model.find_must_effecting_words('MJ_Akbarin', 1000), indent=4, ensure_ascii=False))
     print("------------------")
-    print(json.dumps(model.find_must_effecting_words('hamidrasaee', 10), indent=4, ensure_ascii=False))
+    print(json.dumps(model.find_must_effecting_words('hamidrasaee', 1000), indent=4, ensure_ascii=False))
+
+
+def extract_words_for_mallet():
+    model = NaiveBayesModel(['hamidrasaee', 'MJ_Akbarin'])
+    model.load('model_1523953281')
+
+    most_effective = model.find_must_effecting_words('MJ_Akbarin', 40000) + \
+                     model.find_must_effecting_words('hamidrasaee', 10000)
+
+    most_effective = list(set([i[0] for i in most_effective]))
+
+    import json
+    with open('most_effective_words.json', 'w', encoding='utf8') as f:
+        json.dump(most_effective, f, ensure_ascii=False)
 
 
 def main():
     # train()
     # evaluate()
-    find_most_effective()
+    # find_most_effective()
+    extract_words_for_mallet()
 
 
 if __name__ == '__main__':

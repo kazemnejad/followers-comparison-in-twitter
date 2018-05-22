@@ -64,6 +64,22 @@ def fix_half_space(text):
     return text.replace("‌", "")
 
 
+def fix_long_emoticons(text):
+    p1 = re.compile(r':\)\)\)*')
+    p2 = re.compile(r':\(\(\(*')
+    text = re.sub(p1, ":))", text)
+    text = re.sub(p2, ":((", text)
+
+    return text
+
+
+def fix_emoticons(text):
+    return text.replace(':))', '😂') \
+        .replace(':((', '😭') \
+        .replace(':)', '😄') \
+        .replace(':(', '😢')
+
+
 class Tweet:
     def __init__(self, data, user_id):
         self.user_id = user_id
@@ -179,6 +195,8 @@ def clean_text(text):
     text = fix_half_space_plural(text)
     text = fix_mi(text)
     text = fix_half_space(text)
+    text = fix_long_emoticons(text)
+    text = fix_emoticons(text)
 
     return text
 
@@ -210,3 +228,9 @@ def convert_user_data_to_csv(username):
         result = convert_single_user_to_lst(base_path % (username, user_id))
         with open(output_path % (username, user_id), "w", encoding="utf8") as f:
             json.dump(result, f, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    s = "@Soheil_bigharar 😂😂😂😂😂 ببین باکیا شدیمس:))) ۸۰ میلیون\nزنگ میزنه پلیس واسه یه روسری\nالانشم که رسما چیزی سرتون نیس"
+    s = 'سلام خوبی؟ :)) حح :)))) سخنی :)) :))))‌ سمنم خوبم :(((((س:))) سختی:) سینخسن:( سینخ:(('
+    print(clean_text(s))
